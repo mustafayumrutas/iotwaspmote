@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+    <title>WaspMote x,y,z Verileri</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!--compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Bootstrap cdn testi için gerekli -->
+    <div id="bootstrapCssTest" class="hidden"></div>
+
+    <link rel="stylesheet" type="text/css" hrf="./public/libs/jquery/dist/jquery.jqplot.min.css" />
+
+    <link rel="stylesheet" type="text/css" hrf="./jquery-ui.css" />
+    <script src="/socket.io-client/dist/socket.io.js"></script>
+
+
+    <!--
+    <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap-theme.min.css">
+
+    <link href="/public/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+     -->
+
+    <style>
+        .ui-helper-center {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <nav class="navbar navbar-default">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Çıkış Denetim Paneli (Eyleyici)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="btn-group" role="group" >
+                            <!-- Table -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="ui-helper-center">I/0 1</th>
+                                    <th class="ui-helper-center">I/0 2</th>
+                                    <th class="ui-helper-center">I/0 3</th>
+                                    <th class="ui-helper-center">I/0 4</th>
+                                    <th class="ui-helper-center">I/0 5</th>
+                                    <th class="ui-helper-center">I/0 6</th>
+                                    <th class="ui-helper-center">I/0 7</th>
+                                    <th class="ui-helper-center">I/0 8</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="1" type="button" id="1" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="2" type="button" id="2" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="3" type="button" id="3" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="4" type="button" id="4" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="5" type="button" id="5" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="6" type="button" id="6" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="7" type="button" id="7" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                                    <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="8" type="button" id="8" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!----------------Grafik------------>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary ">
+                    <div class="panel-heading ">
+                        <h3 class="panel-title">Gerçek Zamanlı Algılayıcı Verileri</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-6 ">
+                            <div class="panel panel-default" id="icerik">
+                                <div class="panel-heading">X,Y,Z Konum Değişim (İvme) Bilgisi</div>
+                                <div class="panel-body">
+                                    <div class="plot" style="height: 300px;" id="chart1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="panel panel-default" id="icerik">
+                                <div class="panel-heading">Batarya Seviyesi
+                                </div>
+                                <div class="panel-body">
+                                    <div id="piechart" style="margin-top:55px; margin-bottom:55px; height:190px; " ></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="panel panel-default" id="icerik">
+                                <div class="panel-heading">RTC İç Sıcalık Bilgisi
+                                </div>
+                                <div class="center-block">
+                                    <div class=" panel-body">
+                                        <div id="chart_div" style="margin-top:90px; margin-bottom:10px; margin-left:40px;  height: 200px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Gerçek Zamanlı Algılayıcı Verileri</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="messages" > Connecting...</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+</div>
+
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Üsteki css cdn çöktüyse bootstrap burada ekliyorum.Sayfa max 1 sn geçikme ile responsive olacak.
+    bu da cdn linklerini kontrol etmem gerektiğini anlamam için. Yani css burada kasıtlı olarak ekliyorum.  -->
+<script type="text/javascript">
+    if ($('#bootstrapCssTest').is(':visible') === true) {
+        $('<link href="/public/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />').appendTo('head');
+        window.Bootstrap || document.write('<script src="/public/libs/bootstrap/js/bootstrap.min.js"><\/script>')
+    }
+</script>;
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js"></script>
+<!-- CDN alternatifi olarak -->
+<script type="text/javascript">window.jQuery.jqplot || document.write('<script src="./public/libs/jquery/dist/jquery.jqplot.min.js"><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/jquery.jqplot.min.js"></script> -->
+
+<!-- Aşağıdaki scriptlerin min.js lerini daha sonra yerel indiricem. -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript">window.jQuery.jqplot.CanvasGridRenderer || document.write('<script src="./public/libs/jquery/dist/plugins/jqplot.canvasTextRenderer.js"><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/plugins/jqplot.canvasTextRenderer.js"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript">window.jQuery.jqplot.CanvasAxisLabelRenderer || document.write('<script src="./public/libs/jquery/dist/plugins/jqplot.canvasAxisLabelRenderer.js"><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/plugins/jqplot.canvasAxisLabelRenderer.js"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript">window.jQuery.jqplot.DateAxisRenderer || document.write('<script src="./public/libs/jquery/dist/plugins/jqplot.dateAxisRenderer.js"><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/plugins/jqplot.dateAxisRenderer.js"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.logAxisRenderer.min.js"></script>
+<script type="text/javascript">window.jQuery.jqplot.DateAxisRenderer || document.write('<script src="./public/libs/jquery/dist/plugins/jqplot.logAxisRenderer.js"><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/plugins/jqplot.logAxisRenderer.js"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript">window.jQuery.jqplot.CanvasAxisTickRenderer || document.write('<script src="./public/libs/jquery/dist/plugins/jqplot.canvasAxisTickRenderer.js"><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/plugins/jqplot.canvasAxisTickRenderer.js"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.highlighter.min.js"></script>
+<script type="text/javascript">window.jQuery.jqplot.highlighter || document.write('<script src="./public/libs/jquery/dist/plugins/jqplot.highlighter.js""><\/script>')</script>
+<!-- <script type="text/javascript" src="./public/libs/jquery/dist/plugins/jqplot.highlighter.js"></script> -->
+
+</body>
+</html>

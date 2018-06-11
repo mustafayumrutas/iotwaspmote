@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href=".\vendor\bootstrap\css\bootstrap.css">
+    <script src="./socket.io-client/dist/socket.io.js" ></script>
+    <link rel="stylesheet" href=".\vendor\font-awesome\css\font-awesome.css"/>
+    <link rel='stylesheet' href='./stylesheets/indexstyle.css' />
+    <script type="text/javascript" src="./javascripts/toggle.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <title>Hello, world!</title>
+</head>
+<body>
+<div class="container">
+<div class="row justify-content-md-center">
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title">Çıkış Denetim cardi (Eyleyici)</h3>
+            </div>
+            <div class="card-body"
+                <div class="btn-group" role="group" >
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="ui-helper-center">I/0 1</th>
+                            <th class="ui-helper-center">I/0 2</th>
+                            <th class="ui-helper-center">I/0 3</th>
+                            <th class="ui-helper-center">I/0 4</th>
+                            <th class="ui-helper-center">I/0 5</th>
+                            <th class="ui-helper-center">I/0 6</th>
+                            <th class="ui-helper-center">I/0 7</th>
+                            <th class="ui-helper-center">I/0 8</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="1" type="button" id="1" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="2" type="button" id="2" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="3" type="button" id="3" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="4" type="button" id="4" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="5" type="button" id="5" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="6" type="button" id="6" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="7" type="button" id="7" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+                            <td class="ui-helper-center"><input class="btn btn-default btn-danger" socketNo="8" type="button" id="8" value="OFF" style="color:blue" onclick="toggle(this);"></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Gerçek Zamanlı Algılayıcı Verileri</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                <div class="col-md-6 ">
+                    <div class="card bg-default" id="icerik">
+                        <div class="card-header">X,Y,Z Konum Değişim (İvme) Bilgisi</div>
+                        <div class="card-body">
+                            <div class="plot" style="height: 300px;" id="chart1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-default" id="icerik">
+                        <div class="card-header">Batarya Seviyesi
+                        </div>
+                        <div class="card-body">
+                            <div id="piechart" style="margin-top:55px; margin-bottom:55px; height:190px; " ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="card bg-default" id="icerik">
+                        <div class="card-header">RTC İç Sıcalık Bilgisi
+                        </div>
+                        <div class="center-block">
+                            <div class=" card-body">
+                                <div id="chart_div" style="margin-top:90px; margin-bottom:10px; margin-left:40px;  height: 200px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Gerçek Zamanlı Algılayıcı Verileri</h3>
+            </div>
+            <div class="card-body">
+                <div id="messages" > Connecting...</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src=".\vendor\jquery\jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src=".\vendor\bootstrap\js\bootstrap.js"></script>
+<script src="./javascripts/indexscript.js" ></script>
+</body>
+</html>
