@@ -29,17 +29,18 @@ app.get('/', function (req,res,next) {
     res.render('indexx');
 });
 app.get('/three', function (req,res,next) {
-    req.render('three'  );
+    res.render('three');
 });
-
-var SerialPort = require("serialport");
-//var serialPort = new SerialPort("/dev/ttyUSB0", {
-//Windows Sistemler için
+app.get('/sidebar', function (req,res,next) {
+    res.render('sidebar');
+});
+const SerialPort=require('serialport');
 const Readline = SerialPort.parsers.Readline;
-var serialPort = new SerialPort("COM3", {
-    baudRate: 115200,
-    parser: Readline}
-);
+var sport = new SerialPort('COM3', {
+    baudRate: 115200
+});
+const parser = sport.pipe(new Readline({delimeter : '\r\n'}));
+
 
 var db = monk('localhost/IOTPROJECT');
 should.exists(db);
@@ -97,10 +98,8 @@ io.on('connection', function(socket)
     });
 });
 
-serialPort.on("open", function ()
-{
     // Seri porttan okuma
-    serialPort.on('data', function(datas)
+    parser.on('data', function(datas)
     {
 
         var data =datas+'';
@@ -133,7 +132,6 @@ serialPort.on("open", function ()
     });
 
 
-});
 
 /**
  * Normalize a port into a number, string, or false.

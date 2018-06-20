@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+    var socket = io();
     // temperature
     alert('selam');
     google.charts.load('current', {'packages':['gauge','corechart']});
@@ -48,7 +49,7 @@ $(document).ready(function()
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
         chart.draw(data, options);
     }
-    var socket = io.connect('http://localhost:3000');
+
 
     function getData (data,sensorName){
         //console.log(data.sensor[sensorName]);
@@ -60,6 +61,7 @@ $(document).ready(function()
     var myDataz = [[0,0]];
     socket.on('alldata', function(msg){
         var dataArray = getData(msg,"ACC").split(';');
+        console.log(msg);
         //$('#messages').html($('<li>').text(dataArray[0]+':'+dataArray[1]+':'+dataArray[2]));
         $('#messages').html($('<li>').text(JSON.stringify(msg)));
         var x = (new Date()).getTime();
