@@ -49,6 +49,12 @@ app.get('/navbar', function (req,res,next) {
 app.get('/register', function (req,res,next) {
     res.render('register');
 });
+app.get('/login', function (req,res,next) {
+    res.render('login');
+});
+app.get('/tables', function (req,res,next) {
+    res.render('tables');
+});
 const SerialPort=require('serialport');
 const Readline = SerialPort.parsers.Readline;
 var sport = new SerialPort('COM3', {
