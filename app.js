@@ -26,13 +26,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.get('/', function (req,res,next) {
-    res.render('indexx');
+    res.render('index');
 });
 app.get('/three', function (req,res,next) {
     res.render('three');
 });
-app.get('/sidebar', function (req,res,next) {
-    res.render('sidebar');
+app.get('/cards', function (req,res,next) {
+    res.render('cards');
+});
+app.get('/charts', function (req,res,next) {
+    res.render('charts');
+});
+app.get('/forgot-password', function (req,res,next) {
+    res.render('forgot-password');
+});
+app.get('/index', function (req,res,next) {
+    res.redirect('/');
+});
+app.get('/navbar', function (req,res,next) {
+    res.render('navbar');
+});
+app.get('/register', function (req,res,next) {
+    res.render('register');
 });
 const SerialPort=require('serialport');
 const Readline = SerialPort.parsers.Readline;
