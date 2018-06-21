@@ -23,8 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(__dirname + '/node_modules'));
-
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.get('/', function (req,res,next) {
     res.render('index');
@@ -50,8 +49,18 @@ app.get('/control', function (req,res,next) {
 app.get('/charts', function (req,res,next) {
     res.render('charts');
 });
+app.get('/logs', function (req,res,next) {
+    res.render('logs');
+});
+app.get('/statistics', function (req,res,next) {
+    res.render('statistics');
+});
+
 app.get('/charts/:id', function (req,res,next) {
     res.render('charts');
+});
+app.get('/control/:id', function (req,res,next) {
+    res.render('Control');
 });
 
 

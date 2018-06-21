@@ -9,12 +9,12 @@
     <meta name="author" content="">
     <title>IoT Waspmote Dashboard</title>
     <!-- Bootstrap Çekirdek CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fontlar-->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!-- Özel Stil-->
-    <link href="css/sb-admin.css" rel="stylesheet">
-    <script src="/socket.io-client/dist/socket.io.js" ></script>
+    <link href="../css/sb-admin.css" rel="stylesheet">
+    <script src="../socket.io-client/dist/socket.io.js" ></script>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -117,11 +117,44 @@
             <li class="breadcrumb-item">
                 <a href="index">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">İndex</li>
+            <li class="breadcrumb-item active">Logs</li>
         </ol>
+    </div>
+    <div class="col">
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i> Cihazlar</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Waspmote ID</th>
+                        <th>CONTROL</th>
+                        <th>CHARTS</th>
+                        <th>Log</th>
+                        <th>Statistic</th>
+                        <th>Online</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Waspmote ID</th>
+                        <th>CONTROL</th>
+                        <th>CHARTS</th>
+                        <th>Log</th>
+                        <th>Statistic</th>
+                        <th>Online</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 <!-- /.container-fluid-->
+
 <!-- /.content-wrapper-->
 <footer class="sticky-footer">
     <div class="container">
@@ -153,13 +186,13 @@
     </div>
 </div>
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
-<script src="js/sb-admin.min.js"></script>
-<script src="js/sb-adminindex.js"></script>
+<script src="../js/sb-admin.min.js"></script>
+<script src="../js/sb-adminindex.js"></script>
 </div>
 </body>
 
