@@ -19,6 +19,15 @@ body.fixed-nav {
   padding-top: 56px;
 }
 
+.cardfit {
+  width: fit-content;
+  height: fit-content;
+}
+.controller-button{
+  width: 170px;
+  border-style: solid;
+  border-color: #343a40;
+}
 .content-wrapper {
   min-height: calc(100vh - 56px);
   padding-top: 1rem;
@@ -427,6 +436,13 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
   -webkit-transform: rotate(15deg);
   -ms-transform: rotate(15deg);
   transform: rotate(15deg);
+}
+.icon .arrow {
+  width: 2px;
+  height: 17px;
+  top: 5px;
+  left: 14px;
+  background: #333333;
 }
 
 @media (min-width: 576px) {

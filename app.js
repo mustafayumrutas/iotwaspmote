@@ -25,26 +25,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
+
 app.get('/', function (req,res,next) {
     res.render('index');
-});
-app.get('/three', function (req,res,next) {
-    res.render('three');
-});
-app.get('/cards', function (req,res,next) {
-    res.render('cards');
-});
-app.get('/charts', function (req,res,next) {
-    res.render('charts');
 });
 app.get('/forgot-password', function (req,res,next) {
     res.render('forgot-password');
 });
 app.get('/index', function (req,res,next) {
     res.redirect('/');
-});
-app.get('/navbar', function (req,res,next) {
-    res.render('navbar');
 });
 app.get('/register', function (req,res,next) {
     res.render('register');
@@ -55,6 +44,16 @@ app.get('/login', function (req,res,next) {
 app.get('/tables', function (req,res,next) {
     res.render('tables');
 });
+app.get('/control', function (req,res,next) {
+    res.render('Control');
+});
+
+app.get('/chart', function (req,res,next) {
+    res.render('Control');
+});
+
+
+
 const SerialPort=require('serialport');
 const Readline = SerialPort.parsers.Readline;
 var sport = new SerialPort('COM3', {
@@ -108,7 +107,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-var io = require('socket.io')(http);
+var io = require('socket.io')(server);
 io.on('connection', function(socket)
 {
     console.log('Bir kullanıcı bağlandı');
@@ -168,6 +167,7 @@ function normalizePort(val) {
 
     if (port >= 0) {
         // port number
+        return port;
         return port;
     }
 
