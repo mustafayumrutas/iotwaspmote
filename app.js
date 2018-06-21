@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
+app.use(express.static(__dirname + '/node_modules'));
 
 
 app.get('/', function (req,res,next) {
@@ -47,9 +47,11 @@ app.get('/tables', function (req,res,next) {
 app.get('/control', function (req,res,next) {
     res.render('Control');
 });
-
-app.get('/chart', function (req,res,next) {
-    res.render('Control');
+app.get('/charts', function (req,res,next) {
+    res.render('charts');
+});
+app.get('/charts/:id', function (req,res,next) {
+    res.render('charts');
 });
 
 
@@ -71,20 +73,20 @@ should.exists(collection);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 
@@ -118,38 +120,38 @@ io.on('connection', function(socket)
     });
 });
 
-    // Seri porttan okuma
-    parser.on('data', function(datas)
+// Seri porttan okuma
+parser.on('data', function(datas)
+{
+
+    var data =datas+'';
+    console.log(data);
+
+    var date = new Date();
+    var dataArray = data.split(':');
+    //console.log(dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss")+'-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2]+'k:'+dataArray[3]+'l:'+dataArray[4]);
+
+    console.log('\n');
+
+    var temp= dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss")+'-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2];
+
+    var x=dataArray[0];
+    // Tüm istemcilere gönder
+    io.emit('alldata', data);
+
+    // MongoDB ye kaydet...
+    collection.insert({"time":dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss"), "x": dataArray[0],"y": dataArray[1],"z": dataArray[2] }, function(err, doc)
     {
-
-        var data =datas+'';
-        console.log(data);
-
-        var date = new Date();
-        var dataArray = data.split(':');
-        //console.log(dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss")+'-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2]+'k:'+dataArray[3]+'l:'+dataArray[4]);
-
-        console.log('\n');
-
-        var temp= dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss")+'-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2];
-
-        var x=dataArray[0];
-        // Tüm istemcilere gönder
-        io.emit('alldata', data);
-
-        // MongoDB ye kaydet...
-        collection.insert({"time":dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss"), "x": dataArray[0],"y": dataArray[1],"z": dataArray[2] }, function(err, doc)
+        if(err)
         {
-            if(err)
-            {
-                console.log("HATA");
-            }
-            /*else
-             {
-             console.log("eklendi - ");
-             }*/
-        });
+            console.log("HATA");
+        }
+        /*else
+         {
+         console.log("eklendi - ");
+         }*/
     });
+});
 
 
 
