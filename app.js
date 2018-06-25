@@ -4,14 +4,28 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var passport = require('passport');
+var session = require('express-session');
+var User =require('./models/user')
 var app = express();
 var debug = require('debug')('iotprojectstaj:server');
 var http = require('http');
-var should = require("should");
-var monk=require('monk');
 var dateFormat = require('dateformat');
+var mongoose = require('mongoose');
+var flash = require('connect-flash');
+var configDB = require('./config/database.js');
+//handle mongo error
 
+// mongoose mongodb bağlantısı
+mongoose.connect(configDB.url, function (err) {
+
+    if (err) throw err;
+
+    console.log('Veritabanı Sunucusuna Bağlanıldır');
+});
+
+// passport config ile başlatılması
+require('./config/passport')(passport);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -20,46 +34,93 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// socket için nodemodulesi ekliyoruz
 app.use(express.static(path.join(__dirname, 'node_modules')));
+// session için anahtar üretiliyor
+app.use(session({
+    secret: 'Waspmoteprojects', // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+// passport modulu başlangıç ayarları
+app.use(passport.initialize());
+app.use(passport.session()); // sürekli login kalmak
 
-app.get('/', function (req,res,next) {
+app.use(flash());
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect("/login");
+}
+app.get('/',isLoggedIn, function(req, res) {
+    // eğer login değil ise logini göster login ise indexe yönlendir
+    res.render('login', { message: req.flash('loginMessage') });
+});
+
+    // LOKAL --------------------------------
+        // LOGIN ===============================
+        // login formunu göster
+        app.get('/login', function(req, res) {
+            res.render('login', { message: req.flash('loginMessage') });
+        });
+
+        // loginden gelen post bağlantısı
+        app.post('/login', passport.authenticate('local-login', {
+            successRedirect : '/index', // giriş yapıldıktan sonra 
+            failureRedirect : '/login', // redirect back to the signup page if there is an error
+            failureFlash : true // allow flash messages
+        }));
+
+        // SIGNUP =================================
+        // show the signup form
+        app.get('/register', function(req, res) {
+            res.render('register', { message: req.flash('signupMessage') });
+        });
+
+        // process the signup form
+        app.post('/register', passport.authenticate('local-signup', {
+            successRedirect : '/index', // redirect to the secure profile section
+            failureRedirect : '/register', // redirect back to the signup page if there is an error
+            failureFlash : true // allow flash messages
+}));
+app.get('/index',isLoggedIn, function(req, res){
     res.render('index');
 });
+
+app.get('/signout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
 app.get('/forgot-password', function (req,res,next) {
     res.render('forgot-password');
 });
-app.get('/index', function (req,res,next) {
-    res.redirect('/');
-});
-app.get('/register', function (req,res,next) {
-    res.render('register');
-});
-app.get('/login', function (req,res,next) {
-    res.render('login');
-});
-app.get('/tables', function (req,res,next) {
+
+app.get('/tables',isLoggedIn, function (req,res,next) {
     res.render('tables');
 });
-app.get('/control', function (req,res,next) {
+app.get('/control',isLoggedIn, function (req,res,next) {
     res.render('Control');
 });
-app.get('/charts', function (req,res,next) {
+app.get('/charts',isLoggedIn, function (req,res,next) {
     res.render('charts');
 });
-app.get('/logs', function (req,res,next) {
+app.get('/logs',isLoggedIn, function (req,res,next) {
     res.render('logs');
 });
-app.get('/statistics', function (req,res,next) {
+app.get('/statistics',isLoggedIn, function (req,res,next) {
     res.render('statistics');
 });
 
-app.get('/charts/:id', function (req,res,next) {
+app.get('/charts/:id',isLoggedIn, function (req,res,next) {
     res.render('charts');
 });
-app.get('/control/:id', function (req,res,next) {
+app.get('/control/:id',isLoggedIn, function (req,res,next) {
     res.render('Control');
 });
 
@@ -73,10 +134,6 @@ var sport = new SerialPort('COM3', {
 const parser = sport.pipe(new Readline({delimeter : '\r\n'}));
 
 
-var db = monk('localhost/IOTPROJECT');
-should.exists(db);
-var collection = db.get("Acceleration");
-should.exists(collection);
 
 
 
@@ -149,17 +206,7 @@ parser.on('data', function(datas)
     io.emit('alldata', data);
 
     // MongoDB ye kaydet...
-    collection.insert({"time":dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss"), "x": dataArray[0],"y": dataArray[1],"z": dataArray[2] }, function(err, doc)
-    {
-        if(err)
-        {
-            console.log("HATA");
-        }
-        /*else
-         {
-         console.log("eklendi - ");
-         }*/
-    });
+    
 });
 
 
