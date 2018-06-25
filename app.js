@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
-var User =require('./models/user')
 var app = express();
 var debug = require('debug')('iotprojectstaj:server');
 var http = require('http');
@@ -14,6 +13,7 @@ var dateFormat = require('dateformat');
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var configDB = require('./config/database.js');
+var datatodb =require('./models/data');
 //handle mongo error
 
 // mongoose mongodb bağlantısı
@@ -193,15 +193,20 @@ parser.on('data', function(datas)
     var data =datas+'';
     console.log(data);
 
-    var date = new Date();
+   
     var dataArray = data.split(':');
+    var newdata=new datatodb;
+    newdata.local.xyz='-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2]
+    newdata.local.temp=dataArray[3]
+    newdata.local.battery=dataArray[4]
     //console.log(dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss")+'-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2]+'k:'+dataArray[3]+'l:'+dataArray[4]);
 
+    newdata.save(function(err){
+        if(err) throw err
+        else 
+        console.log(newdata);
+    });
     console.log('\n');
-
-    var temp= dateFormat(date.getTime(), "yyyy-mm-dd HH:MM:ss")+'-->x:'+dataArray[0]+'y:'+dataArray[1]+'z:'+dataArray[2];
-
-    var x=dataArray[0];
     // Tüm istemcilere gönder
     io.emit('alldata', data);
 
