@@ -111,7 +111,10 @@ app.get('/charts',isLoggedIn, function (req,res,next) {
     res.render('charts');
 });
 app.get('/logs',isLoggedIn, function (req,res,next) {
-    res.render('logs');
+    GetLogs(function(logs){
+        res.render('logs',{logs:logs});
+    })
+    
 });
 app.get('/statistics',isLoggedIn, function (req,res,next) {
     res.render('statistics');
@@ -124,6 +127,12 @@ app.get('/control/:id',isLoggedIn, function (req,res,next) {
     res.render('Control');
 });
 
+var GetLogs=function (callback) {
+    datatodb.find({},function (err,result){
+        if(err) throw err;
+        callback(result);
+    });
+};
 
 
 const SerialPort=require('serialport');

@@ -129,12 +129,11 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>Waspmote ID</th>
-                        <th>CONTROL</th>
-                        <th>CHARTS</th>
-                        <th>Log</th>
-                        <th>Statistic</th>
-                        <th>Online</th>
+                        <th>Log ID</th>
+                        <th>XYZ</th>
+                        <th>Temp</th>
+                        <th>Battery</th>
+                        <th>Date</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -144,9 +143,20 @@
                         <th>CHARTS</th>
                         <th>Log</th>
                         <th>Statistic</th>
-                        <th>Online</th>
                     </tr>
                     </tfoot>
+                    <tbody>
+                            <% if (locals.logs) { %>
+                                <% for(var log of logs){ %>
+                                <tr log-id="<%= log.id %>">
+                                  <td><%= log.id %></td>
+                                  <td><%= log.local.xyz %></td>
+                                  <td><%= log.local.temp %></td>
+                                  <td><%= log.local.battery %></td>
+                                  <td><%= log.local.datetime %></td>
+                                </tr>
+                                <%}}%>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -192,7 +202,7 @@
 <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
 <script src="../js/sb-admin.min.js"></script>
-<script src="../js/sb-adminindex.js"></script>
+<script src="../js/sb-adminlogs.js"></script>
 </div>
 </body>
 
